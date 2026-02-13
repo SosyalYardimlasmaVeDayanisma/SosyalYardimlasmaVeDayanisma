@@ -1,0 +1,74 @@
+@model Merchant
+@{
+    ViewData["Title"] = "İşletme Düzenle";
+}
+
+<div class="container page-container">
+    <div style="max-width: 700px; margin: 0 auto;">
+        <h1 class="page-title">İşletme Düzenle</h1>
+        <p class="page-description">İşletme bilgilerini güncelleyin</p>
+
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="form-label">İşletme Adı *</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Category" class="form-label">Kategori *</label>
+                        <select asp-for="Category" class="form-control">
+                            <option value="">Kategori seçin</option>
+                            <option value="Gıda & İçecek">Gıda & İçecek</option>
+                            <option value="Giyim">Giyim</option>
+                            <option value="Eğitim">Eğitim</option>
+                            <option value="Sağlık">Sağlık</option>
+                            <option value="Teknoloji">Teknoloji</option>
+                            <option value="Spor">Spor</option>
+                            <option value="Kültür & Sanat">Kültür & Sanat</option>
+                            <option value="Diğer">Diğer</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="City" class="form-label">Şehir *</label>
+                        <input asp-for="City" class="form-control" />
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="BusinessType" class="form-label">İşletme Tipi</label>
+                        <input asp-for="BusinessType" class="form-control" />
+                        <span asp-validation-for="BusinessType" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ContributionDescription" class="form-label">Katkı Açıklaması</label>
+                        <textarea asp-for="ContributionDescription" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="ContributionDescription" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Type" class="form-label">Destekçi Tipi</label>
+                        <select asp-for="Type" class="form-control">
+                            <option value="0">Yerel Fiziki İşletme</option>
+                            <option value="1">Kooperatif ve Sosyal Girişim</option>
+                            <option value="2">Yerli ve Etik Dijital Destekçi</option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-danger"></span>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Güncelle</button>
+                        <a href="/AdminMerchant" class="btn btn-outline">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

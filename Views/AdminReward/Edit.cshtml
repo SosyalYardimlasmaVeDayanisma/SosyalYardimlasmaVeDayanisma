@@ -1,0 +1,56 @@
+@model Reward
+@{
+    ViewData["Title"] = "Ödül Düzenle";
+}
+
+<div class="container page-container">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 class="page-title">Ödül Düzenle</h1>
+
+        <form method="post" class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Ödül Adı *</label>
+                    <input type="text" name="Title" value="@Model.Title" placeholder="Ödül adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mağaza Adı *</label>
+                    <input type="text" name="MerchantName" value="@Model.MerchantName" placeholder="Mağaza adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kategori *</label>
+                    <input type="text" name="Category" value="@Model.Category" placeholder="Örn: Yemek & İçecek" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Şehir *</label>
+                    <input type="text" name="City" value="@Model.City" placeholder="İl adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Maliyet (Puan) *</label>
+                    <input type="number" name="CostPoints" value="@Model.CostPoints" required step="50" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Stok Sayısı *</label>
+                    <input type="number" name="Stock" value="@Model.Stock" required step="1" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Geçerlilik Tarihi *</label>
+                    <input type="date" name="ValidUntil" value="@Model.ValidUntil.ToString("yyyy-MM-dd")" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Açıklama</label>
+                    <textarea name="Description" placeholder="Ödül açıklaması" rows="3" class="form-input">@Model.Description</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top: 24px;">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>

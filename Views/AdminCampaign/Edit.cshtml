@@ -1,0 +1,60 @@
+@model Campaign
+@{
+    ViewData["Title"] = "Kampanya Düzenle";
+}
+
+<div class="container page-container">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 class="page-title">Kampanya Düzenle</h1>
+
+        <form method="post" class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Kampanya Adı *</label>
+                    <input type="text" name="Title" value="@Model.Title" placeholder="Kampanya adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Açıklama</label>
+                    <textarea name="Description" placeholder="Kampanya açıklaması" rows="4" class="form-input">@Model.Description</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Şehir *</label>
+                    <input type="text" name="City" value="@Model.City" placeholder="İl adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Afet Türü *</label>
+                    <select name="DisasterType" required class="form-select">
+                        <option value="0" selected="@(Model.DisasterType == DisasterType.Deprem)">Deprem</option>
+                        <option value="1" selected="@(Model.DisasterType == DisasterType.Sel)">Sel</option>
+                        <option value="2" selected="@(Model.DisasterType == DisasterType.Yangın)">Yangın</option>
+                        <option value="3" selected="@(Model.DisasterType == DisasterType.Diğer)">Diğer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Hedef Tutar (TL) *</label>
+                    <input type="number" name="GoalAmount" value="@Model.GoalAmount" required step="1000" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">NGO Adı *</label>
+                    <input type="text" name="NgoName" value="@Model.NgoName" placeholder="Organizasyon adı" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Durum</label>
+                    <select name="Status" class="form-select">
+                        <option value="0" selected="@(Model.Status == CampaignStatus.Aktif)">Aktif</option>
+                        <option value="1" selected="@(Model.Status == CampaignStatus.Tamamlandı)">Tamamlandı</option>
+                        <option value="2" selected="@(Model.Status == CampaignStatus.Beklemede)">Beklemede</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top: 24px;">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>

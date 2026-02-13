@@ -1,0 +1,223 @@
+@model User
+@{
+    ViewData["Title"] = "Hesabım";
+    var user = ViewBag.User as User;
+    var wallet = ViewBag.Wallet as Wallet;
+    var donations = ViewBag.Donations as List<Donation>;
+    var transactions = ViewBag.Transactions as List<WalletTransaction>;
+    var donationCount = ViewBag.DonationCount as int? ?? 0;
+    var totalDonations = ViewBag.TotalDonations as decimal? ?? 0;
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+
+<div class="container page-container">
+    <div class="mb-8">
+        <h1 class="page-title">Hesabım</h1>
+        <p class="page-description">Bilgileriniz ve etkinlikleriniz</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert-success" style="margin-bottom: 24px; padding: 16px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%); border-left: 4px solid var(--primary); border-radius: var(--radius-md); color: var(--primary-dark);">
+            @successMessage
+        </div>
+    }
+
+    <!-- Kullanıcı Bilgileri ve Cüzdan -->
+    <div class="content-grid" style="margin-bottom: 24px;">
+        <!-- Kullanıcı Kartı -->
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px;">Bilgilerim</h3>
+                <div class="space-y-3">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <svg style="width: 20px; height: 20px; color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <div>
+                            <div style="font-size: 14px; color: var(--text-secondary);">Ad Soyad</div>
+                            <div style="font-weight: 500;">@user?.FullName</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <svg style="width: 20px; height: 20px; color: var(--text-secondary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <div>
+                            <div style="font-size: 14px; color: var(--text-secondary);">E-posta</div>
+                            <div style="font-weight: 500;">@user?.Email</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cüzdan Kartı -->
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px;">Cüzdanım</h3>
+                <div style="font-size: 42px; font-weight: bold; color: var(--primary); margin-bottom: 12px;">@wallet.Balance.ToString("N0")</div>
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 16px;">Toplam Puanınız</div>
+                <span class="badge" style="background-color: @(wallet.Tier == WalletTier.Bronz ? "#FEF3C7" : wallet.Tier == WalletTier.Gümüş ? "#F3F4F6" : wallet.Tier == WalletTier.Altın ? "#FEF9C3" : "#F3E8FF"); 
+                    color: @(wallet.Tier == WalletTier.Bronz ? "#92400E" : wallet.Tier == WalletTier.Gümüş ? "#374151" : wallet.Tier == WalletTier.Altın ? "#854D0E" : "#6B21A8"); 
+                    border: 1px solid currentColor;">
+                    @wallet.Tier Üye
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- İstatistikler -->
+    <div class="stats-grid" style="margin-bottom: 24px;">
+        <div class="card stat-card">
+            <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div class="stat-value">@donationCount</div>
+            <div class="stat-label">Bağış Sayısı</div>
+        </div>
+        <div class="card stat-card">
+            <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <div class="stat-value">₺@totalDonations.ToString("N0")</div>
+            <div class="stat-label">Toplam Katkı</div>
+        </div>
+        <div class="card stat-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);">
+            <svg class="stat-icon" style="color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
+            <div class="stat-value" style="color: var(--primary);">+@wallet.TotalEarned.ToString("N0")</div>
+            <div class="stat-label">Kazanılan Puan</div>
+        </div>
+        <div class="card stat-card" style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.08) 0%, rgba(220, 38, 38, 0.04) 100%);">
+            <svg class="stat-icon" style="color: #DC2626;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+            </svg>
+            <div class="stat-value" style="color: #DC2626;">-@wallet.TotalSpent.ToString("N0")</div>
+            <div class="stat-label">Harcanan Puan</div>
+        </div>
+    </div>
+
+    <!-- Son İşlemler -->
+    @if (transactions != null && transactions.Any())
+    {
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Son İşlemler</h3>
+                <div class="space-y-2">
+                    @foreach (var tx in transactions)
+                    {
+                        <div class="wallet-transaction">
+                            <div class="wallet-transaction-info">
+                                <div class="wallet-transaction-title">@(tx.Description ?? tx.Ref)</div>
+                                <div class="wallet-transaction-date">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    @tx.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="wallet-transaction-amount @(tx.Amount > 0 ? "positive" : "negative")">
+                                @(tx.Amount > 0 ? "+" : "")@tx.Amount.ToString("N0")
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Hesap Bilgileri</h3>
+                    <div style="font-size: 14px; color: var(--text-secondary); line-height: 1.8;">
+                        <div>Üyelik Tarihi: @user?.CreatedAt.ToString("dd.MM.yyyy")</div>
+                        <div>Kazanılan Toplam Puan: @wallet?.TotalEarned</div>
+                        <div>Harcanan Toplam Puan: @wallet?.TotalSpent</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bağış Geçmişi -->
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Bağış Geçmişi</h3>
+
+                @if (donations != null && donations.Any())
+                {
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
+                                <tr>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 14px;">Tarih</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 14px;">Tutar</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 14px;">Kazanılan Puan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var donation in donations)
+                                {
+                                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                                        <td style="padding: 12px; font-size: 14px;">@donation.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td style="padding: 12px; font-size: 14px; font-weight: 500;">₺@donation.Amount.ToString("N0")</td>
+                                        <td style="padding: 12px; font-size: 14px; color: var(--primary); font-weight: 600;">+@donation.PointsEarned</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p style="text-align: center; color: var(--text-secondary); padding: 24px;">Henüz bağış yapmadınız</p>
+                }
+            </div>
+        </div>
+
+        <!-- İşlem Geçmişi -->
+        <div class="card" style="margin-top: 24px;">
+            <div class="card-body">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Puan İşlemleri</h3>
+
+                @if (wallet?.Transactions != null && wallet.Transactions.Any())
+                {
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
+                                <tr>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 14px;">Tarih</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 14px;">Tür</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; font-size: 14px;">Açıklama</th>
+                                    <th style="padding: 12px; text-align: right; font-weight: 600; font-size: 14px;">Miktar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var tx in wallet.Transactions.Take(20))
+                                {
+                                    <tr style="border-bottom: 1px solid #e5e7eb;">
+                                        <td style="padding: 12px; font-size: 14px;">@tx.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td style="padding: 12px; font-size: 14px;">
+                                            <span style="background-color: @(tx.Type == TransactionType.Earn ? "#dbeafe" : "#fee2e2"); color: @(tx.Type == TransactionType.Earn ? "#0369a1" : "#991b1b"); padding: 4px 8px; border-radius: 4px; font-size: 12px;">
+                                                @(tx.Type == TransactionType.Earn ? "Kazanç" : "Harcama")
+                                            </span>
+                                        </td>
+                                        <td style="padding: 12px; font-size: 14px;">@tx.Description</td>
+                                        <td style="padding: 12px; text-align: right; font-weight: 600; color: @(tx.Amount > 0 ? "var(--primary)" : "#dc2626");">
+                                            @(tx.Amount > 0 ? "+" : "")@tx.Amount
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p style="text-align: center; color: var(--text-secondary); padding: 24px;">İşlem geçmişi boş</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

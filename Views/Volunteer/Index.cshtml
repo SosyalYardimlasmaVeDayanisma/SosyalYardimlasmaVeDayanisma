@@ -1,0 +1,205 @@
+@model VolunteerApplication
+@{
+    ViewData["Title"] = "Gönüllü Ol";
+}
+
+<div class="container page-container">
+    <!-- Başlık ve Açıklama -->
+    <div class="mb-8" style="text-align: center; max-width: 800px; margin: 0 auto 48px auto;">
+        <h1 class="page-title">Gönüllü Ol 🤝</h1>
+        <p class="page-description" style="font-size: 16px; line-height: 1.8;">
+            Gönüllülük, platformumuzun temel taşlarından biridir. Para dışında vakit, yetenek ve enerji ile de katkı sağlayabilirsiniz. 
+            Birlikte daha güçlüyüz ve her bir gönüllü, toplumsal dayanışmayı büyütür. 
+            Siz de bu anlamlı yolculuğa katılın!
+        </p>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div style="padding: 16px 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%); border-left: 4px solid var(--primary); border-radius: 8px; margin-bottom: 32px;">
+            <p style="margin: 0; color: var(--primary); font-weight: 600; font-size: 15px;">
+                ✅ @TempData["SuccessMessage"]
+            </p>
+        </div>
+    }
+
+    <!-- Gönüllülük Alanları -->
+    <div style="margin-bottom: 48px;">
+        <h2 style="font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 24px; text-align: center;">
+            Gönüllülük Alanları
+        </h2>
+        <div class="grid grid-2" style="gap: 24px;">
+            <!-- Dijital Gönüllülük -->
+            <div class="card" style="border: 2px solid rgba(16, 185, 129, 0.15); transition: all 0.3s ease;">
+                <div class="card-body">
+                    <div style="font-size: 48px; text-align: center; margin-bottom: 16px;">💻</div>
+                    <h3 style="font-weight: 700; font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-align: center;">
+                        Dijital Gönüllülük
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin-bottom: 20px; text-align: center;">
+                        Web geliştirme, tasarım, içerik üretimi veya sosyal medya yönetimi gibi alanlarda dijital yeteneklerinizle katkı sağlayın.
+                    </p>
+                    <button type="button" onclick="scrollToForm('Dijital Gönüllülük')" class="btn btn-outline" style="width: 100%;">
+                        Başvur
+                    </button>
+                </div>
+            </div>
+
+            <!-- Eğitim Destek Gönüllülüğü -->
+            <div class="card" style="border: 2px solid rgba(16, 185, 129, 0.15); transition: all 0.3s ease;">
+                <div class="card-body">
+                    <div style="font-size: 48px; text-align: center; margin-bottom: 16px;">📚</div>
+                    <h3 style="font-weight: 700; font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-align: center;">
+                        Eğitim Destek Gönüllülüğü
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin-bottom: 20px; text-align: center;">
+                        Online eğitim, mentorluk, ödev yardımı veya okuma yazma desteği ile çocukların ve gençlerin hayatına dokunun.
+                    </p>
+                    <button type="button" onclick="scrollToForm('Eğitim Destek Gönüllülüğü')" class="btn btn-outline" style="width: 100%;">
+                        Başvur
+                    </button>
+                </div>
+            </div>
+
+            <!-- Saha Destek Gönüllülüğü -->
+            <div class="card" style="border: 2px solid rgba(16, 185, 129, 0.15); transition: all 0.3s ease;">
+                <div class="card-body">
+                    <div style="font-size: 48px; text-align: center; margin-bottom: 16px;">🏃</div>
+                    <h3 style="font-weight: 700; font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-align: center;">
+                        Saha Destek Gönüllülüğü
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin-bottom: 20px; text-align: center;">
+                        Afet bölgelerinde, yardım dağıtımlarında veya kampanya organizasyonlarında fiziksel destek vererek sahada yer alın.
+                    </p>
+                    <button type="button" onclick="scrollToForm('Saha Destek Gönüllülüğü')" class="btn btn-outline" style="width: 100%;">
+                        Başvur
+                    </button>
+                </div>
+            </div>
+
+            <!-- Farkındalık & Yaygınlaştırma -->
+            <div class="card" style="border: 2px solid rgba(16, 185, 129, 0.15); transition: all 0.3s ease;">
+                <div class="card-body">
+                    <div style="font-size: 48px; text-align: center; margin-bottom: 16px;">📢</div>
+                    <h3 style="font-weight: 700; font-size: 18px; color: var(--text-primary); margin-bottom: 12px; text-align: center;">
+                        Farkındalık & Yaygınlaştırma
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7; margin-bottom: 20px; text-align: center;">
+                        Platformu çevrenizde tanıtarak, kampanyaları paylaşarak ve topluluk oluşturarak iyiliği yaygınlaştırın.
+                    </p>
+                    <button type="button" onclick="scrollToForm('Farkındalık & Yaygınlaştırma')" class="btn btn-outline" style="width: 100%;">
+                        Başvur
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Başvuru Formu -->
+    <div class="card" id="application-form" style="max-width: 700px; margin: 0 auto; border: 2px solid rgba(16, 185, 129, 0.2); background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 250, 251, 0.98) 100%);">
+        <div class="card-body">
+            <h2 style="font-size: 22px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; text-align: center;">
+                Gönüllü Başvuru Formu
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 14px; text-align: center; margin-bottom: 28px;">
+                Formu doldurun, sizinle en kısa sürede iletişime geçelim.
+            </p>
+
+            <form asp-action="Apply" asp-controller="Volunteer" method="post">
+                <div class="form-group">
+                    <label asp-for="FullName" class="form-label">Ad Soyad *</label>
+                    <input asp-for="FullName" class="form-control" placeholder="Adınız ve soyadınız" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Email" class="form-label">E-posta *</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="ornek@email.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="City" class="form-label">İl *</label>
+                    <select asp-for="City" class="form-control">
+                        <option value="">Şehir seçin</option>
+                        <option value="İstanbul">İstanbul</option>
+                        <option value="Ankara">Ankara</option>
+                        <option value="İzmir">İzmir</option>
+                        <option value="Bursa">Bursa</option>
+                        <option value="Antalya">Antalya</option>
+                        <option value="Adana">Adana</option>
+                        <option value="Gaziantep">Gaziantep</option>
+                        <option value="Konya">Konya</option>
+                        <option value="Kocaeli">Kocaeli</option>
+                        <option value="Mersin">Mersin</option>
+                        <option value="Diyarbakır">Diyarbakır</option>
+                        <option value="Kayseri">Kayseri</option>
+                        <option value="Eskişehir">Eskişehir</option>
+                        <option value="Samsun">Samsun</option>
+                        <option value="Denizli">Denizli</option>
+                        <option value="Şanlıurfa">Şanlıurfa</option>
+                        <option value="Trabzon">Trabzon</option>
+                        <option value="Balıkesir">Balıkesir</option>
+                        <option value="Malatya">Malatya</option>
+                        <option value="Kahramanmaraş">Kahramanmaraş</option>
+                        <option value="Manisa">Manisa</option>
+                        <option value="Van">Van</option>
+                        <option value="Aydın">Aydın</option>
+                        <option value="Tekirdağ">Tekirdağ</option>
+                        <option value="Hatay">Hatay</option>
+                        <option value="Muğla">Muğla</option>
+                        <option value="Elazığ">Elazığ</option>
+                        <option value="Erzurum">Erzurum</option>
+                        <option value="Sivas">Sivas</option>
+                        <option value="Mardin">Mardin</option>
+                        <option value="Diğer">Diğer</option>
+                    </select>
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="VolunteerArea" class="form-label">Gönüllülük Alanı *</label>
+                    <select asp-for="VolunteerArea" class="form-control" id="volunteerAreaSelect">
+                        <option value="">Alan seçin</option>
+                        <option value="Dijital Gönüllülük">💻 Dijital Gönüllülük</option>
+                        <option value="Eğitim Destek Gönüllülüğü">📚 Eğitim Destek Gönüllülüğü</option>
+                        <option value="Saha Destek Gönüllülüğü">🏃 Saha Destek Gönüllülüğü</option>
+                        <option value="Farkındalık & Yaygınlaştırma">📢 Farkındalık & Yaygınlaştırma</option>
+                    </select>
+                    <span asp-validation-for="VolunteerArea" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Notes" class="form-label">Notlar (İsteğe Bağlı)</label>
+                    <textarea asp-for="Notes" class="form-control" rows="4" placeholder="Kendiniz hakkında bilgi, deneyimleriniz veya eklemek istediğiniz notlar..."></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-size: 16px; font-weight: 600;">
+                    Başvuruyu Gönder
+                </button>
+
+                <p style="margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-secondary);">
+                    <strong>Not:</strong> Başvurunuz en geç 3 iş günü içinde değerlendirilecektir.
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function scrollToForm(area) {
+        // Formu scroll et
+        document.getElementById('application-form').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+        });
+        
+        // Alan seçimini otomatik yap
+        setTimeout(() => {
+            const select = document.getElementById('volunteerAreaSelect');
+            select.value = area;
+            select.focus();
+        }, 500);
+    }
+</script>

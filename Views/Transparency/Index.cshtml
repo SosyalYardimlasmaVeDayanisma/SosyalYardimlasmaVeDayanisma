@@ -1,0 +1,419 @@
+@model TransparencyStats
+@{
+    ViewData["Title"] = "Şeffaflık";
+}
+
+<div class="container page-container">
+    <div class="mb-8">
+        <h1 class="page-title">Şeffaflık Raporu 📊</h1>
+        <p class="page-description">
+            Platform istatistikleri, bağış verileri ve yardım dağılımları. 
+            Her bağışın nereye gittiğini, kaç kişiye ulaştığını ve toplumsal etkisini şeffaflıkla paylaşıyoruz.
+        </p>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom: 32px;">
+        <div class="card stat-card">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px;">Toplam Yardım</h3>
+            <div style="font-size: 36px; font-weight: 900; color: var(--primary);">₺@Model.TotalDonations.ToString("N0")</div>
+        </div>
+        <div class="card stat-card">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px;">Aktif Kampanyalar</h3>
+            <div style="font-size: 36px; font-weight: 900; color: var(--primary);">@Model.TotalCampaigns</div>
+        </div>
+        <div class="card stat-card">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px;">İyilik Yapanlar</h3>
+            <div style="font-size: 36px; font-weight: 900; color: var(--primary);">@Model.TotalParticipants.ToString("N0")</div>
+        </div>
+        <div class="card stat-card">
+            <h3 style="font-size: 15px; font-weight: 600; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px;">Ortalama Yardım</h3>
+            <div style="font-size: 36px; font-weight: 900; color: var(--primary);">₺@Model.AvgDonation.ToString("N0")</div>
+        </div>
+    </div>
+
+    <div class="grid grid-2" style="gap: 24px; margin-bottom: 32px;">
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-weight: 600; margin-bottom: 16px;">Nasıl Çalışır?</h3>
+                <div class="space-y-4">
+                    <div>
+                        <h4 style="font-weight: 700; margin-bottom: 10px; color: var(--primary); font-size: 18px;">1. İyilik Alanı Seçin</h4>
+                        <p class="text-secondary" style="font-size: 15px; line-height: 1.8;">Afet, hayvan, çocuk, doğa veya diğer kategorilerden size en yakın kampanyayı seçin ve katkı sağlayın.</p>
+                    </div>
+                    <div>
+                        <h4 style="font-weight: 700; margin-bottom: 10px; color: var(--primary); font-size: 18px;">2. İyilik Puanı Kazanın</h4>
+                        <p class="text-secondary" style="font-size: 15px; line-height: 1.8;">Her 10 TL katkı için 1 iyilik puanı kazanırsınız. Ne kadar çok katkı, o kadar çok puan!</p>
+                    </div>
+                    <div>
+                        <h4 style="font-weight: 700; margin-bottom: 10px; color: var(--primary); font-size: 18px;">3. İyiliği Büyütün</h4>
+                        <p class="text-secondary" style="font-size: 15px; line-height: 1.8;">Kazandığınız iyilik puanlarıyla destekçi işletmelerden indirimler alabilir, iyilik döngüsünü büyütebilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-weight: 600; margin-bottom: 20px;">Katkı Dağılımı 📈</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; font-size: 14px; color: var(--text-primary);">🏚️ Afet & Acil Yardım</span>
+                            <span style="font-weight: 700; color: var(--primary);">42%</span>
+                        </div>
+                        <div style="height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;">
+                            <div style="height: 100%; width: 42%; background: linear-gradient(90deg, var(--primary) 0%, #059669 100%); border-radius: 999px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; font-size: 14px; color: var(--text-primary);">👶 Çocuk & Eğitim</span>
+                            <span style="font-weight: 700; color: var(--primary);">28%</span>
+                        </div>
+                        <div style="height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;">
+                            <div style="height: 100%; width: 28%; background: linear-gradient(90deg, var(--primary) 0%, #059669 100%); border-radius: 999px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; font-size: 14px; color: var(--text-primary);">🐾 Hayvan Refahı</span>
+                            <span style="font-weight: 700; color: var(--primary);">18%</span>
+                        </div>
+                        <div style="height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;">
+                            <div style="height: 100%; width: 18%; background: linear-gradient(90deg, var(--primary) 0%, #059669 100%); border-radius: 999px;"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; font-size: 14px; color: var(--text-primary);">🌳 Çevre & Doğa</span>
+                            <span style="font-weight: 700; color: var(--primary);">12%</span>
+                        </div>
+                        <div style="height: 8px; background: #e5e7eb; border-radius: 999px; overflow: hidden;">
+                            <div style="height: 100%; width: 12%; background: linear-gradient(90deg, var(--primary) 0%, #059669 100%); border-radius: 999px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 16px; padding: 12px; background: rgba(16, 185, 129, 0.08); border-radius: 8px; border-left: 3px solid var(--primary);">
+                    <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                        <strong style="color: var(--text-primary);">💡 Not:</strong> Bu veriler tüm kullanıcıların katkılarının toplamına göre hesaplanmaktadır.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ne Yapmıyoruz Bölümü -->
+    <div class="card" style="border: 2px solid rgba(16, 185, 129, 0.15); background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);">
+        <div class="card-body">
+            <h3 style="font-weight: 600; margin-bottom: 20px; color: var(--text-primary); font-size: 20px;">Ne Yapmıyoruz? 🛡️</h3>
+            <div class="grid grid-2" style="gap: 20px;">
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 3px solid var(--primary);">
+                    <h4 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">❌ Ticari Amaç Yok</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+                        Katkılarınız hiçbir şekilde ticari amaçla kullanılmaz, kar amacı gütmez.
+                    </p>
+                </div>
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 3px solid var(--primary);">
+                    <h4 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">❌ Sıralama Yok</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+                        Kullanıcılar katkı miktarına göre sıralanmaz, yarıştırılmaz veya karşılaştırılmaz.
+                    </p>
+                </div>
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 3px solid var(--primary);">
+                    <h4 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">❌ Gizli Kesinti Yok</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+                        Katkılarınızdan hiçbir kesinti yapılmaz, tüm tutar doğrudan kampanyaya gider.
+                    </p>
+                </div>
+                <div style="padding: 16px; background: white; border-radius: 8px; border-left: 3px solid var(--primary);">
+                    <h4 style="font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">✅ Şeffaf Veri</h4>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">
+                        Tüm veriler açık ve net bir şekilde paylaşılır, gizlilik her zaman korunur.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Etki Haritası Bölümü -->
+    <div class="card" style="margin-top: 32px; overflow: visible;">
+        <div class="card-body">
+            <h3 style="font-weight: 600; margin-bottom: 8px; color: var(--text-primary); font-size: 20px;">🗺️ Etki Haritası</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 14px;">
+                Türkiye genelinde yürütülen kampanyaların coğrafi dağılımı. Marker renkleri iyilik alanlarını temsil eder.
+            </p>
+            
+            <div id="impact-map" style="height: 500px; width: 100%; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); z-index: 1; position: relative;"></div>
+            
+            <!-- Boş harita mesajı -->
+            <div id="map-empty-message" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 1000;">
+                <div style="font-size: 48px; margin-bottom: 1rem;">📍</div>
+                <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">Henüz kampanya yok</h4>
+                <p style="color: var(--text-secondary); font-size: 14px;">Haritada gösterilecek kampanya bulunamadı.</p>
+            </div>
+            
+            <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="width: 12px; height: 12px; background: #EF4444; border-radius: 50%;"></div>
+                    <span style="font-size: 13px; color: var(--text-secondary);">Afet & Acil Durum</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="width: 12px; height: 12px; background: #3B82F6; border-radius: 50%;"></div>
+                    <span style="font-size: 13px; color: var(--text-secondary);">Eğitim & Çocuk</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="width: 12px; height: 12px; background: #8B5CF6; border-radius: 50%;"></div>
+                    <span style="font-size: 13px; color: var(--text-secondary);">Hayvanlar</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="width: 12px; height: 12px; background: #10B981; border-radius: 50%;"></div>
+                    <span style="font-size: 13px; color: var(--text-secondary);">Çevre & Doğa</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="width: 12px; height: 12px; background: #F59E0B; border-radius: 50%;"></div>
+                    <span style="font-size: 13px; color: var(--text-secondary);">Gıda & Temel İhtiyaç</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                    <div style="width: 12px; height: 12px; background: #EC4899; border-radius: 50%;"></div>
+                    <span style="font-size: 13px; color: var(--text-secondary);">Sağlık</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+         crossorigin=""/>
+    
+    <style>
+        #impact-map {
+            position: relative;
+        }
+        
+        .leaflet-container {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .leaflet-popup-content-wrapper {
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .leaflet-popup-content {
+            margin: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .leaflet-popup-tip {
+            background: white;
+        }
+        
+        .custom-marker {
+            background: transparent !important;
+            border: none !important;
+        }
+    </style>
+}
+
+@section Scripts {
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+         crossorigin=""></script>
+
+    <script>
+        (function() {
+            'use strict';
+            
+            console.log('Leaflet harita scripti yükleniyor...');
+            
+            // Şehir koordinatları
+            const cityCoordinates = {
+                'İstanbul': [41.0082, 28.9784],
+                'Ankara': [39.9334, 32.8597],
+                'İzmir': [38.4237, 27.1428],
+                'Antalya': [36.8969, 30.7133],
+                'Bursa': [40.1826, 29.0665],
+                'Adana': [37.0000, 35.3213],
+                'Gaziantep': [37.0662, 37.3833],
+                'Konya': [37.8746, 32.4932],
+                'Muğla': [37.2153, 28.3636],
+                'Mersin': [36.8000, 34.6333],
+                'Kayseri': [38.7205, 35.4826],
+                'Eskişehir': [39.7767, 30.5206],
+                'Diyarbakır': [37.9144, 40.2306],
+                'Samsun': [41.2867, 36.3300],
+                'Denizli': [37.7765, 29.0864],
+                'Şanlıurfa': [37.1591, 38.7969],
+                'Adapazarı': [40.7569, 30.4030],
+                'Malatya': [38.3552, 38.3095],
+                'Kahramanmaraş': [37.5858, 36.9371],
+                'Erzurum': [39.9000, 41.2700],
+                'Van': [38.4891, 43.4089],
+                'Batman': [37.8812, 41.1351],
+                'Elazığ': [38.6810, 39.2264],
+                'Trabzon': [41.0027, 39.7168],
+                'Manisa': [38.6191, 27.4289],
+                'Kocaeli': [40.8533, 29.8815],
+                'Balıkesir': [39.6484, 27.8826],
+                'Hatay': [36.4018, 36.3498],
+                'Tekirdağ': [40.9833, 27.5167],
+                'Çorum': [40.5506, 34.9556],
+                'Aydın': [37.8560, 27.8416]
+            };
+
+            // Kategori renkleri
+            const categoryColors = {
+                'AfetAcilDurum': '#EF4444',
+                'EgitimCocuk': '#3B82F6',
+                'Hayvanlar': '#8B5CF6',
+                'CevreVeDoga': '#10B981',
+                'GidaTemelIhtiyac': '#F59E0B',
+                'Saglik': '#EC4899'
+            };
+
+            // Kampanya verilerini hazırla
+            const campaignsData = @Html.Raw(ViewBag.CampaignsJson ?? "[]");
+
+            console.log('📊 Kampanya verisi:', campaignsData);
+            console.log('📈 Toplam kampanya sayısı:', campaignsData.length);
+            
+            if (campaignsData.length === 0) {
+                console.error('❌ UYARI: Kampanya verisi boş! ViewBag.Campaigns kontrol edilmeli.');
+            }
+
+            // Haritayı başlat
+            function initMap() {
+                try {
+                    console.log('Harita başlatılıyor...');
+                    console.log('Leaflet yüklü mü?', typeof L !== 'undefined');
+                    
+                    // Harita container'ı kontrol et
+                    const mapContainer = document.getElementById('impact-map');
+                    if (!mapContainer) {
+                        console.error('Harita container bulunamadı!');
+                        return;
+                    }
+                    
+                    console.log('Container bulundu, harita oluşturululuyor...');
+                    console.log('Container boyutları:', mapContainer.offsetWidth, 'x', mapContainer.offsetHeight);
+                    
+                    if (campaignsData.length === 0) {
+                        console.warn('⚠️ Kampanya verisi yok! Harita boş görünecek.');
+                        // Haritayı yine de oluştur
+                    }
+                    
+                    // Haritayı oluştur (varsayılan zoom kontrolü devre dışı)
+                    const map = L.map('impact-map', {
+                        center: [39.0, 35.0],
+                        zoom: 6,
+                        scrollWheelZoom: true,
+                        dragging: true,
+                        zoomControl: false
+                    });
+
+                    console.log('Harita nesnesi oluşturuldu');
+
+                    // Türkçe OpenStreetMap katmanı
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: 'Harita Verileri © OpenStreetMap',
+                        maxZoom: 18,
+                        minZoom: 5
+                    }).addTo(map);
+
+                    console.log('Tile layer eklendi');
+
+                    // Tek Türkçe zoom kontrolü
+                    L.control.zoom({
+                        position: 'topright',
+                        zoomInTitle: 'Yakınlaştır',
+                        zoomOutTitle: 'Uzaklaştır'
+                    }).addTo(map);
+
+                    // Marker sayacı
+                    let markerCount = 0;
+
+                    // Her kampanya için marker ekle
+                    campaignsData.forEach((campaign, index) => {
+                        console.log(`Kampanya ${index + 1}:`, campaign);
+                        const coords = cityCoordinates[campaign.city];
+                        if (coords) {
+                            const color = categoryColors[campaign.category] || '#6B7280';
+                            
+                            // Özel marker ikonu oluştur
+                            const markerIcon = L.divIcon({
+                                className: 'custom-marker',
+                                html: `<div style="
+                                    width: 24px;
+                                    height: 24px;
+                                    background: ${color};
+                                    border: 3px solid white;
+                                    border-radius: 50%;
+                                    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                                "></div>`,
+                                iconSize: [24, 24],
+                                iconAnchor: [12, 12]
+                            });
+
+                            const marker = L.marker(coords, { icon: markerIcon }).addTo(map);
+                            markerCount++;
+                            
+                            // Popup içeriği
+                            const popupContent = `
+                                <div style="min-width: 200px;">
+                                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700; color: #111827;">${campaign.title}</h4>
+                                    <div style="margin-bottom: 6px;">
+                                        <span style="font-size: 12px; color: #6B7280; font-weight: 600;">${campaign.categoryDisplayName}</span>
+                                    </div>
+                                    <div style="margin-bottom: 6px;">
+                                        <span style="font-size: 12px; color: #6B7280;">📍 ${campaign.city}</span>
+                                    </div>
+                                    <div style="margin-bottom: 4px;">
+                                        <span style="font-size: 13px; font-weight: 700; color: #10B981;">₺${campaign.raisedAmount.toLocaleString('tr-TR')}</span>
+                                        <span style="font-size: 12px; color: #9CA3AF;"> / ₺${campaign.goalAmount.toLocaleString('tr-TR')}</span>
+                                    </div>
+                                    <div style="height: 4px; background: #E5E7EB; border-radius: 4px; overflow: hidden; margin-top: 8px;">
+                                        <div style="height: 100%; width: ${Math.min((campaign.raisedAmount / campaign.goalAmount) * 100, 100)}%; background: #10B981;"></div>
+                                    </div>
+                                    ${campaign.isVerified ? '<div style="display: inline-block; padding: 4px 8px; background: rgba(16, 185, 129, 0.15); color: #059669; border-radius: 12px; font-size: 11px; font-weight: 600; margin-top: 8px;">✓ Doğrulandı</div>' : ''}
+                                </div>
+                            `;
+                            
+                            marker.bindPopup(popupContent);
+                        } else {
+                            console.warn(`Şehir koordinatları bulunamadı: ${campaign.city}`);
+                        }
+                    });
+
+                    console.log(`✅ Harita başarıyla yüklendi! ${markerCount} marker eklendi.`);
+                    
+                    if (markerCount === 0) {
+                        console.error('❌ HİÇ MARKER EKLENEMEDİ! Kampanya verisi veya şehir koordinatları kontrol edilmeli.');
+                        // Boş harita mesajını göster
+                        document.getElementById('map-empty-message').style.display = 'block';
+                    }
+
+                    // Harita yüklenme kontrolü
+                    setTimeout(() => {
+                        map.invalidateSize();
+                    }, 100);
+
+                } catch (error) {
+                    console.error('❌ Harita başlatma hatası:', error);
+                    document.getElementById('map-empty-message').style.display = 'block';
+                }
+            }
+
+            // Haritayı başlat
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMap);
+            } else {
+                // DOM zaten yüklenmiş
+                setTimeout(initMap, 100);
+            }
+        })();
+    </script>
+}

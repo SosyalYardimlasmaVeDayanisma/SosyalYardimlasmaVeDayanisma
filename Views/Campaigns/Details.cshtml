@@ -1,0 +1,99 @@
+@model Campaign
+@{
+    ViewData["Title"] = Model.Title;
+    var verification = ViewBag.Verification as AfetPuan.Models.ImpactVerification;
+}
+
+<div class="container page-container">
+    <div style="max-width: 896px; margin: 0 auto;">
+        <div class="card">
+            <div class="card-body">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <h1 class="page-title" style="margin: 0;">@Model.Title</h1>
+                    @if (verification != null && verification.IsVerified)
+                    {
+                        <div class="verification-badge" title="@verification.VerifyingOrganization tarafından doğrulandı">
+                            <svg style="width: 18px; height: 18px; margin-right: 6px;" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Doğrulandı
+                        </div>
+                    }
+                </div>
+                @if (verification != null && verification.IsVerified)
+                {
+                    <div class="verification-info">
+                        <strong>@verification.VerifyingOrganization</strong> tarafından 
+                        @verification.VerificationDate?.ToString("dd MMMM yyyy") tarihinde doğrulandı.
+                        @if (!string.IsNullOrEmpty(verification.Description))
+                        {
+                            <br /><small>@verification.Description</small>
+                        }
+                    </div>
+                }
+                <div class="campaign-meta mb-4">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    @Model.City
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 16px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    @Model.NgoName
+                    @if (Model.CreatedAt.HasValue)
+                    {
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px; margin-left: 16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        @Model.CreatedAt.Value.ToString("dd.MM.yyyy")
+                    }
+                </div>
+                <span class="badge @(Model.Status == CampaignStatus.Aktif ? "badge-active" : Model.Status == CampaignStatus.Tamamlandı ? "badge-completed" : "badge-pending") mb-6">
+                    @Model.Status
+                </span>
+
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="mb-6">
+                        <h3 style="font-weight: 600; margin-bottom: 8px;">Açıklama</h3>
+                        <p class="text-secondary">@Model.Description</p>
+                    </div>
+                }
+
+                <div class="mb-6">
+                    <h3 style="font-weight: 600; margin-bottom: 16px;">Kampanya İlerlemesi</h3>
+                    <div class="progress-bar mb-4">
+                        <div class="progress-fill" style="width: @Math.Min(Model.Progress, 100)%"></div>
+                    </div>
+                    <div class="campaign-progress-info">
+                        <span class="text-secondary">
+                            <span class="campaign-progress-amount">₺@Model.RaisedAmount.ToString("N0")</span>
+                            / ₺@Model.GoalAmount.ToString("N0")
+                        </span>
+                        <span class="text-primary" style="font-weight: 500;">
+                            %@Model.Progress.ToString("F1") tamamlandı
+                        </span>
+                    </div>
+                </div>
+
+                <div class="secondary-info" style="margin-bottom: 32px; padding: 20px; background: var(--bg-secondary); border-radius: var(--radius-md); border-left: 3px solid var(--primary);">
+                    <div style="display: flex; align-items: center; gap: 10px; color: var(--text-secondary); font-size: 14px;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 18px; height: 18px; flex-shrink: 0;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Bu kampanyaya yardım ettiğinizde her 10 TL için <strong style="color: var(--primary);">1 İyilik Puanı</strong> kazanırsınız</span>
+                    </div>
+                </div>
+
+                <a href="/Donate?campaign=@Model.Id" class="btn btn-primary btn-full btn-lg">
+                    <svg style="width: 24px; height: 24px; margin-right: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                    Yardım Et ve İyilik Puanı Kazan 💚
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

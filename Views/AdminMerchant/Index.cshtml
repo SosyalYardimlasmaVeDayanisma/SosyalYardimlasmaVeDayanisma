@@ -1,0 +1,64 @@
+@model List<Merchant>
+@{
+    ViewData["Title"] = "İşletme Yönetimi";
+}
+
+<div class="container page-container">
+    <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+            <div>
+                <h1 class="page-title">İşletme Yönetimi</h1>
+                <p class="page-description">Destekçi işletmeleri ekle, düzenle veya kaldır</p>
+            </div>
+            <a href="/AdminMerchant/Create" class="btn btn-primary">Yeni İşletme Ekle</a>
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div style="padding: 16px 20px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%); border-left: 4px solid var(--primary); border-radius: 8px; margin-bottom: 24px;">
+                <p style="margin: 0; color: var(--primary); font-weight: 600; font-size: 15px;">
+                    ✅ @TempData["SuccessMessage"]
+                </p>
+            </div>
+        }
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="grid grid-3" style="gap: 24px;">
+                @foreach (var merchant in Model)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">
+                                @merchant.Name
+                            </h3>
+                            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">
+                                @merchant.City • @merchant.Category
+                            </p>
+                            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 16px;">
+                                @merchant.TypeDisplayName
+                            </p>
+                            <div style="display: flex; gap: 8px;">
+                                <a href="/AdminMerchant/Edit/@merchant.Id" class="btn btn-outline btn-sm" style="flex: 1;">Düzenle</a>
+                                <form method="post" action="/AdminMerchant/Delete/@merchant.Id" style="flex: 1;" onsubmit="return confirm('Bu işletmeyi silmek istediğinizden emin misiniz?');">
+                                    <button type="submit" class="btn btn-outline btn-sm" style="width: 100%; color: var(--danger); border-color: var(--danger);">Sil</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="card empty-state">
+                <p>Henüz işletme eklenmemiş.</p>
+                <a href="/AdminMerchant/Create" class="btn btn-primary">İlk İşletmeyi Ekle</a>
+            </div>
+        }
+
+        <div style="margin-top: 32px;">
+            <a href="/Admin" class="btn btn-outline">← Yönetim Paneline Dön</a>
+        </div>
+    </div>
+</div>

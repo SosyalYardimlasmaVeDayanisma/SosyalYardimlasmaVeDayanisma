@@ -1,0 +1,240 @@
+@model List<Reward>
+@{
+    ViewData["Title"] = "Katkıyı Dönüştür";
+    var search = ViewBag.Search as string;
+    var category = ViewBag.Category as RewardCategory?;
+    var activeTab = ViewBag.Tab as ContributionType? ?? ContributionType.BaskasıIcinDonustur;
+    var categories = ViewBag.Categories as RewardCategory[];
+    var wallet = ViewBag.Wallet as Wallet;
+}
+
+<div class="container page-container">
+    <!-- Başlık ve Yönlendirme -->
+    <div class="mb-8" style="text-align: center; max-width: 700px; margin: 0 auto 48px;">
+        <h1 class="page-title" style="margin-bottom: 16px;">Katkıyı Dönüştür</h1>
+        <p class="page-description" style="font-size: 16px; line-height: 1.6; color: var(--text-secondary);">
+            Katkını nasıl kullanmak istersin? Sen karar ver. Başkasına destek olabilir, kendin için bir şey seçebilir ya da hiçbirini yapmayabilirsin. Özgürsün.
+        </p>
+    </div>
+
+    <!-- Ana Sekme Yapısı -->
+    <div class="contribution-tabs">
+        <button class="tab-btn @(activeTab == ContributionType.BaskasıIcinDonustur ? "active" : "")" 
+                data-tab="BaskasıIcinDonustur">
+            <svg style="width: 20px; height: 20px; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+            Başkası İçin Dönüştür
+        </button>
+        <button class="tab-btn @(activeTab == ContributionType.KendinIcinGelistir ? "active" : "")" 
+                data-tab="KendinIcinGelistir">
+            <svg style="width: 20px; height: 20px; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+            Kendin İçin Geliştir
+        </button>
+    </div>
+
+    <!-- Sekme Açıklamaları -->
+    <div class="tab-content-description">
+        @if (activeTab == ContributionType.BaskasıIcinDonustur)
+        {
+            <div class="info-box">
+                <svg style="width: 18px; height: 18px; margin-right: 10px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <p>Puanlarını toplumsal etkiye dönüştür: Doğaya fidan dik, hayvan barınaklarına mama desteği sağla, eğitim ve gıda yardımına katkıda bulun.</p>
+            </div>
+        }
+        else
+        {
+            <div class="info-box" style="background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%); border-left: 4px solid var(--primary);">
+                <svg style="width: 18px; height: 18px; margin-right: 10px; flex-shrink: 0; color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+                <div>
+                    <p style="font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">İyilik yaparken, kendini de geliştir</p>
+                    <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5;">
+                        Burada herkesin erişebildiği ücretsiz platformlar yok. Bunlar; bilinç, farkındalık, öğrenme ve üretkenliğini artıracak, 
+                        topluluklara erişim sağlayacak özel içerikler ve araçlar. Topluma katkı yaparken, kendine de yatırım yap.
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Arama -->
+    <div style="margin-bottom: 24px;">
+        <form method="get" action="/Rewards" id="rewardFilterForm" class="search-input-wrapper">
+            <input type="hidden" name="tab" id="rewardTabInput" value="@activeTab">
+            <input type="hidden" name="category" id="rewardCategoryInput" value="@category">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" name="search" value="@search" placeholder="Katkı seçeneği ara..." class="search-input form-input">
+        </form>
+    </div>
+
+    <!-- Katkı Kartları -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="grid grid-3">
+            @foreach (var reward in Model)
+            {
+                <div class="card reward-card @(reward.RewardType == RewardCategory.ToplumselKatki ? "social-impact-reward" : "")">
+                    <div class="card-body">
+                        <div class="reward-category-label">@reward.RewardTypeDisplayName</div>
+                        <h3 style="font-size: 20px; font-weight: bold; margin-bottom: 8px;">@reward.Title</h3>
+                        <div class="campaign-meta" style="margin-bottom: 16px;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                            @reward.MerchantName
+                            @if (reward.IsLocalBusiness)
+                            {
+                                <span style="color: var(--primary); font-weight: 600;">• Yerel</span>
+                            }
+                        </div>
+                        @if (!string.IsNullOrEmpty(reward.ImpactDescription))
+                        {
+                            <div class="impact-badge">
+                                <svg style="width: 14px; height: 14px; margin-right: 6px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                @reward.ImpactDescription
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(reward.Description))
+                        {
+                            <p class="text-secondary" style="font-size: 14px; margin-bottom: 16px;">@reward.Description</p>
+                        }
+                        
+                        @* Kendin İçin Geliştir sekmesinde özel alanlar *@
+                        @if (reward.ContributionType == ContributionType.KendinIcinGelistir)
+                        {
+                            @if (!string.IsNullOrEmpty(reward.LearningOutcome))
+                            {
+                                <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-bottom: 12px; border-left: 3px solid var(--primary);">
+                                    <div style="display: flex; align-items: start; gap: 8px;">
+                                        <svg style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; color: var(--primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <div>
+                                            <div style="font-size: 11px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Kazanımlar</div>
+                                            <div style="font-size: 13px; color: var(--text-primary); line-height: 1.4;">@reward.LearningOutcome</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(reward.GrowthArea))
+                            {
+                                <div style="display: inline-flex; align-items: center; gap: 6px; background: #fef3c7; color: #92400e; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-bottom: 12px;">
+                                    <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                    @reward.GrowthArea
+                                </div>
+                            }
+                        }
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; gap: 16px; font-size: 14px; color: var(--text-secondary);">
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    @reward.ValidUntil.ToString("dd.MM.yyyy")
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 4px;">
+                                    <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                    </svg>
+                                    @reward.Stock adet
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 24px; font-weight: bold; color: var(--primary);">@reward.CostPoints.ToString("N0")</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">puan</div>
+                            </div>
+                        </div>
+                        @{
+                            var isDisabled = (wallet?.Balance ?? 0) < reward.CostPoints || !reward.IsValid || !reward.InStock;
+                            var insufficientBalance = (wallet?.Balance ?? 0) < reward.CostPoints;
+                            var buttonText = reward.RewardType == RewardCategory.ToplumselKatki ? "Katkıya Dönüştür" : 
+                                           reward.ContributionType == ContributionType.KendinIcinGelistir ? "Kendine Yatırım Yap" : "Etkini Kullan";
+                        }
+                        <button onclick="redeemReward('@reward.Id')" 
+                                class="btn btn-primary btn-full @(insufficientBalance && reward.IsValid && reward.InStock ? "insufficient-balance" : "")"
+                                @(isDisabled ? "disabled" : "")>
+                            @if ((wallet?.Balance ?? 0) < reward.CostPoints)
+                            {
+                                <text>Yetersiz Puan</text>
+                            }
+                            else if (!reward.IsValid)
+                            {
+                                <text>Geçersiz</text>
+                            }
+                            else if (!reward.InStock)
+                            {
+                                <text>Tükendi</text>
+                            }
+                            else
+                            {
+                                <text>@buttonText</text>
+                            }
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card empty-state">
+            <p>Katkı seçeneği bulunamadı</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+// Sekme değiştirme
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const selectedTab = this.dataset.tab;
+        document.getElementById('rewardTabInput').value = selectedTab;
+        
+        // Aktif durumu güncelle
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Formu gönder
+        document.getElementById('rewardFilterForm').submit();
+    });
+});
+
+async function redeemReward(rewardId) {
+    try {
+        const response = await fetch('/Rewards/Redeem', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `id=${rewardId}`
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(`Katkı kodunuz: ${result.code}\n\nBu kod 5 dakika içinde geçersiz olacaktır.`);
+            window.location.reload();
+        } else {
+            alert(result.message || 'Katkı seçeneği kullanılamadı');
+        }
+    } catch (error) {
+        alert('Bir hata oluştu');
+    }
+}
+</script>
+}
+

@@ -1,0 +1,243 @@
+@model List<AfetPuan.Models.VolunteerApplication>
+@using AfetPuan.Models
+@{
+    ViewData["Title"] = "Gönüllülük Başvuruları";
+    
+    var pendingCount = Model.Count(a => a.Status == ApplicationStatus.Pending);
+    var approvedCount = Model.Count(a => a.Status == ApplicationStatus.Approved);
+    var rejectedCount = Model.Count(a => a.Status == ApplicationStatus.Rejected);
+}
+
+<div class="container page-container">
+    <div style="margin-bottom: 32px;">
+        <h1 class="page-title">Gönüllülük Başvuruları 👥</h1>
+        <p class="page-description">
+            Gönüllü olmak isteyen kişilerin başvurularını inceleyin ve yönetin.
+        </p>
+    </div>
+
+    <!-- İstatistikler -->
+    <div class="stats-grid" style="margin-bottom: 32px;">
+        <div class="card stat-card">
+            <div class="stat-value" style="color: #F59E0B;">@pendingCount</div>
+            <div class="stat-label">Bekleyen</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-value" style="color: #10B981;">@approvedCount</div>
+            <div class="stat-label">Onaylanan</div>
+        </div>
+        <div class="card stat-card">
+            <div class="stat-value" style="color: #EF4444;">@rejectedCount</div>
+            <div class="stat-label">Reddedilen</div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 60px 20px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+            <h3 style="font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">
+                Henüz başvuru yok
+            </h3>
+            <p style="color: var(--text-secondary);">
+                Gönüllü başvuruları buradan görüntülenecek.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Ad Soyad</th>
+                            <th>E-posta</th>
+                            <th>İl</th>
+                            <th>Gönüllülük Alanı</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var app in Model)
+                        {
+                            var statusColor = app.Status switch
+                            {
+                                ApplicationStatus.Pending => "#F59E0B",
+                                ApplicationStatus.Approved => "#10B981",
+                                ApplicationStatus.Rejected => "#EF4444",
+                                _ => "#6B7280"
+                            };
+
+                            var statusText = app.Status switch
+                            {
+                                ApplicationStatus.Pending => "Beklemede",
+                                ApplicationStatus.Approved => "Onaylandı",
+                                ApplicationStatus.Rejected => "Reddedildi",
+                                _ => "Bilinmiyor"
+                            };
+
+                            <tr data-application-id="@app.Id">
+                                <td>@app.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>
+                                    <strong>@app.FullName</strong>
+                                    @if (!string.IsNullOrEmpty(app.Notes))
+                                    {
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">
+                                            @app.Notes
+                                        </div>
+                                    }
+                                </td>
+                                <td>@app.Email</td>
+                                <td>@app.City</td>
+                                <td>@app.VolunteerArea</td>
+                                <td>
+                                    <span class="status-badge" style="background: @statusColor; color: white;">
+                                        @statusText
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 8px;">
+                                        @if (app.Status == ApplicationStatus.Pending)
+                                        {
+                                            <button class="btn btn-sm" style="background: #10B981; color: white; padding: 6px 12px;" onclick="updateStatus(@app.Id, 1)">
+                                                ✓ Onayla
+                                            </button>
+                                            <button class="btn btn-sm" style="background: #EF4444; color: white; padding: 6px 12px;" onclick="updateStatus(@app.Id, 2)">
+                                                ✗ Reddet
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-outline" onclick="updateStatus(@app.Id, 0)">
+                                                ↻ Bekletmeye Al
+                                            </button>
+                                        }
+                                        <button class="btn btn-sm btn-outline" style="color: #EF4444; border-color: #EF4444;" onclick="deleteApplication(@app.Id)">
+                                            🗑️
+                                        </button>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(app.AdminNotes))
+                                    {
+                                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px; font-style: italic;">
+                                            Not: @app.AdminNotes
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table thead {
+        background: var(--bg-secondary);
+    }
+
+    .table th {
+        padding: 16px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--text-secondary);
+        border-bottom: 2px solid #E5E7EB;
+    }
+
+    .table td {
+        padding: 16px;
+        border-bottom: 1px solid #E5E7EB;
+        font-size: 14px;
+        color: var(--text-primary);
+    }
+
+    .table tbody tr:hover {
+        background: var(--bg-secondary);
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    async function updateStatus(applicationId, status) {
+        const statusNames = ['Beklemede', 'Onaylandı', 'Reddedildi'];
+        const adminNotes = prompt(`Durum: ${statusNames[status]}\n\nİsteğe bağlı not ekleyebilirsiniz:`);
+        
+        // Kullanıcı iptal ederse işlemi durdur
+        if (adminNotes === null) return;
+
+        try {
+            const response = await fetch('/AdminVolunteer/UpdateStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    id: applicationId,
+                    status: status,
+                    adminNotes: adminNotes || ''
+                })
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('✓ Başvuru durumu güncellendi');
+                location.reload();
+            } else {
+                alert('✗ ' + result.message);
+            }
+        } catch (error) {
+            alert('✗ Bir hata oluştu: ' + error.message);
+        }
+    }
+
+    async function deleteApplication(applicationId) {
+        if (!confirm('Bu başvuruyu silmek istediğinizden emin misiniz?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/AdminVolunteer/Delete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    id: applicationId
+                })
+            });
+
+            const result = await response.json();
+            
+            if (result.success) {
+                alert('✓ Başvuru silindi');
+                location.reload();
+            } else {
+                alert('✗ ' + result.message);
+            }
+        } catch (error) {
+            alert('✗ Bir hata oluştu: ' + error.message);
+        }
+    }
+</script>

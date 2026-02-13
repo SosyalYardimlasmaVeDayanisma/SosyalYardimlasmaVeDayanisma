@@ -1,0 +1,215 @@
+@{
+    ViewData["Title"] = "Yardım Yap ve İyilik Puanı Kazan";
+    var selectedCampaign = ViewBag.SelectedCampaign as Campaign;
+    var campaigns = ViewBag.Campaigns as List<Campaign>;
+}
+
+<div class="container page-container">
+    <div class="wizard-container">
+        <h1 class="page-title">Yardım Yap ve İyilik Puanı Kazan 💚</h1>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="wizard-steps">
+                    <div class="wizard-step active" id="stepIndicator1">1</div>
+                    <div class="wizard-step-line" id="line1"></div>
+                    <div class="wizard-step inactive" id="stepIndicator2">2</div>
+                    <div class="wizard-step-line" id="line2"></div>
+                    <div class="wizard-step inactive" id="stepIndicator3">3</div>
+                </div>
+
+                <form id="donateForm">
+                    <div class="wizard-step-content active" id="step1">
+                        <h3 style="font-weight: 700; margin-bottom: 20px; font-size: 22px; color: var(--primary);">1. Yardım Kampanyası Seçin</h3>
+                        <div class="campaign-select-list">
+                            @foreach (var campaign in campaigns ?? new List<Campaign>())
+                            {
+                                <button type="button" data-campaign-id="@campaign.Id" class="campaign-select-btn">
+                                    <div style="font-weight: 500;">@campaign.Title</div>
+                                    <div style="font-size: 14px; color: var(--text-secondary);">@campaign.City • @campaign.NgoName</div>
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="wizard-step-content" id="step2">
+                        <h3 style="font-weight: 700; margin-bottom: 20px; font-size: 22px; color: var(--primary);">2. Yardım Miktarını Belirleyin</h3>
+                        <input type="number" id="amount" name="amount" placeholder="Yardım miktarı (TL)" min="10" step="10" class="form-input">
+                        <div class="secondary-info" id="pointsPreview" style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Her 10 TL yardım için 1 İyilik Puanı kazanırsınız. Kazanacağınız puan: <strong id="pointsValue" style="color: var(--primary); font-weight: 700;">0</strong></span>
+                        </div>
+                        <div class="amount-buttons">
+                            <button type="button" class="amount-btn" data-amount="50">₺50</button>
+                            <button type="button" class="amount-btn" data-amount="100">₺100</button>
+                            <button type="button" class="amount-btn" data-amount="250">₺250</button>
+                            <button type="button" class="amount-btn" data-amount="500">₺500</button>
+                        </div>
+                    </div>
+
+                    <div class="wizard-step-content" id="step3">
+                        <h3 style="font-weight: 700; margin-bottom: 20px; font-size: 22px; color: var(--primary);">3. Yardımı Tamamla</h3>
+                        <div class="payment-mock">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                            </svg>
+                            <p class="info-text" style="margin-bottom: 16px; opacity: 0.8;">Mock ödeme - Gerçek ödeme entegrasyonu yapılmadı</p>
+                            <div class="payment-summary">
+                                <div class="payment-summary-label">Toplam Tutar</div>
+                                <div class="payment-summary-amount" id="totalAmount">₺0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="campaignId" name="campaignId" value="@selectedCampaign?.Id">
+
+                    <div class="wizard-actions">
+                        <button type="button" id="prevBtn" class="btn btn-outline" style="display: none;">Geri</button>
+                        <div style="flex: 1;"></div>
+                        <button type="button" id="nextBtn" class="btn btn-primary">İleri</button>
+                        <button type="submit" id="submitBtn" class="btn btn-primary btn-lg" style="display: none;">
+                            <svg style="width: 24px; height: 24px; margin-right: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                            Yardımı Tamamla ve İyilik Puanı Kazan 💚
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+let currentStep = 1;
+let selectedCampaignId = '@selectedCampaign?.Id';
+
+function updateStepIndicator() {
+    for (let i = 1; i <= 3; i++) {
+        const step = document.getElementById('stepIndicator' + i);
+        const line = document.getElementById('line' + (i - 1));
+        const content = document.getElementById('step' + i);
+        
+        if (i < currentStep) {
+            step.className = 'wizard-step active';
+            step.innerHTML = '✓';
+            if (line) line.className = 'wizard-step-line active';
+            if (content) content.className = 'wizard-step-content';
+        } else if (i === currentStep) {
+            step.className = 'wizard-step active';
+            step.innerHTML = i;
+            if (line) {
+                if (i < 3) line.className = 'wizard-step-line';
+            }
+            if (content) content.className = 'wizard-step-content active';
+        } else {
+            step.className = 'wizard-step inactive';
+            step.innerHTML = i;
+            if (line) line.className = 'wizard-step-line';
+            if (content) content.className = 'wizard-step-content';
+        }
+    }
+}
+
+document.querySelectorAll('.campaign-select-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.campaign-select-btn').forEach(b => {
+            b.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        selectedCampaignId = this.dataset.campaignId;
+        document.getElementById('campaignId').value = selectedCampaignId;
+    });
+});
+
+document.querySelectorAll('.amount-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.getElementById('amount').value = this.dataset.amount;
+        updatePointsPreview();
+    });
+});
+
+document.getElementById('amount').addEventListener('input', updatePointsPreview);
+
+function updatePointsPreview() {
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    const points = Math.floor(amount / 10);
+    const pointsValue = document.getElementById('pointsValue');
+    
+    if (amount > 0) {
+        pointsValue.textContent = points.toLocaleString('tr-TR');
+    } else {
+        pointsValue.textContent = '0';
+    }
+}
+
+document.getElementById('nextBtn').addEventListener('click', function() {
+    if (currentStep === 1) {
+        if (!selectedCampaignId) {
+            alert('Lütfen bir kampanya seçiniz');
+            return;
+        }
+        currentStep = 2;
+        updateStepIndicator();
+        document.getElementById('prevBtn').style.display = 'inline-flex';
+    } else if (currentStep === 2) {
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        if (amount < 10) {
+            alert('Minimum 10 TL bağış yapabilirsiniz');
+            return;
+        }
+        currentStep = 3;
+        updateStepIndicator();
+        document.getElementById('nextBtn').style.display = 'none';
+        document.getElementById('submitBtn').style.display = 'inline-flex';
+        document.getElementById('totalAmount').textContent = '₺' + amount.toLocaleString('tr-TR');
+    }
+});
+
+document.getElementById('prevBtn').addEventListener('click', function() {
+    if (currentStep === 2) {
+        currentStep = 1;
+        updateStepIndicator();
+        document.getElementById('prevBtn').style.display = 'none';
+    } else if (currentStep === 3) {
+        currentStep = 2;
+        updateStepIndicator();
+        document.getElementById('submitBtn').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'inline-flex';
+    }
+});
+
+document.getElementById('donateForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const campaignId = document.getElementById('campaignId').value;
+    const amount = parseFloat(document.getElementById('amount').value);
+
+    try {
+        const response = await fetch('/Donate/ProcessDonation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `campaignId=${campaignId}&amount=${amount}`
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(`Harika! ${result.pointsEarned} iyilik puanı kazandınız! 💚`);
+            window.location.href = '/';
+        } else {
+            alert(result.message || 'Bağış işlemi başarısız oldu');
+        }
+    } catch (error) {
+        alert('Bir hata oluştu');
+    }
+});
+
+updateStepIndicator();
+</script>
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sosyal Dayanışma Ağı | Dayanışma ve Destek Platformu</title>
+    <meta name="description" content="Sosyal dayanışma ağı. Afet, hayvan, çocuk, doğa ve daha birçok alanda destek ol, puan kazan, katkıları dönüştür. Birlikte daha güçlüyüz.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css?v=1.2" />
+    
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div style="min-height: 100vh; display: flex; flex-direction: column;">
+        @await Html.PartialAsync("_Header")
+        
+        <main style="flex: 1;">
+            @RenderBody()
+        </main>
+        
+        @await Html.PartialAsync("_Footer")
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const header = document.querySelector('header');
+            
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('active');
+                });
+            }
+            
+            // Header scroll effect
+            if (header) {
+                let lastScroll = 0;
+                window.addEventListener('scroll', function() {
+                    const currentScroll = window.pageYOffset;
+                    if (currentScroll > 50) {
+                        header.classList.add('scrolled');
+                    } else {
+                        header.classList.remove('scrolled');
+                    }
+                    lastScroll = currentScroll;
+                });
+            }
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

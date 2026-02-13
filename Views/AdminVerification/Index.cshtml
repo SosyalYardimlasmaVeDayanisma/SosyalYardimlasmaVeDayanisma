@@ -1,0 +1,170 @@
+@model List<AfetPuan.Models.ImpactVerification>
+
+@{
+    ViewData["Title"] = "Etki Doğrulamaları";
+}
+
+<div class="admin-verification-page">
+    <div class="page-header">
+        <h1>Etki Doğrulamaları</h1>
+        <a href="@Url.Action("Create")" class="btn-primary">+ Yeni Doğrulama</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    <div class="verifications-list">
+        @if (!Model.Any())
+        {
+            <div class="empty-state">
+                <p>Henüz doğrulama bulunmuyor.</p>
+            </div>
+        }
+        else
+        {
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Varlık Tipi</th>
+                        <th>Varlık ID</th>
+                        <th>Durum</th>
+                        <th>Kuruluş</th>
+                        <th>Tarih</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var verification in Model)
+                    {
+                        <tr>
+                            <td>@verification.EntityType</td>
+                            <td><code>@verification.EntityId.Substring(0, Math.Min(8, verification.EntityId.Length))...</code></td>
+                            <td>
+                                @if (verification.IsVerified)
+                                {
+                                    <span class="badge badge-success">✓ Doğrulandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-warning">Beklemede</span>
+                                }
+                            </td>
+                            <td>@(verification.VerifyingOrganization ?? "-")</td>
+                            <td>@(verification.VerificationDate?.ToString("dd MMM yyyy") ?? "-")</td>
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = verification.Id })" class="btn-sm">Düzenle</a>
+                                <form asp-action="Delete" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@verification.Id" />
+                                    <button type="submit" class="btn-sm btn-danger" onclick="return confirm('Silmek istediğinize emin misiniz?')">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<style>
+.admin-verification-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--primary-dark);
+    border: 1px solid var(--primary-light);
+}
+
+.data-table {
+    width: 100%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.data-table thead {
+    background: var(--primary);
+    color: white;
+}
+
+.data-table th,
+.data-table td {
+    padding: 1rem;
+    text-align: left;
+}
+
+.data-table tbody tr:hover {
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--primary-dark);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-dark);
+}
+
+.btn-sm {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    text-decoration: none;
+    background: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.btn-sm:hover {
+    background: var(--primary-dark);
+}
+
+.btn-sm.btn-danger {
+    background: #EF4444;
+}
+
+.btn-sm.btn-danger:hover {
+    background: #DC2626;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+}
+</style>

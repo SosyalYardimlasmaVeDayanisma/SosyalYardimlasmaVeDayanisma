@@ -1,0 +1,57 @@
+@model List<Reward>
+@{
+    ViewData["Title"] = "Ödül Yönetimi";
+}
+
+<div class="container page-container">
+    <div class="mb-8">
+        <h1 class="page-title">Ödül Yönetimi</h1>
+        <p class="page-description">Yeni ödül ekle, mevcut ödülleri düzenle veya sil</p>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+        <a href="/AdminReward/Create" class="btn btn-primary">+ Yeni Ödül Ekle</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px;">
+                <thead style="background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
+                    <tr>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Ödül Adı</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Mağaza</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Puan</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Stok</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Geçerlilik</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reward in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 16px; font-weight: 500;">@reward.Title</td>
+                            <td style="padding: 16px;">@reward.MerchantName</td>
+                            <td style="padding: 16px;">@reward.CostPoints</td>
+                            <td style="padding: 16px;">@reward.Stock</td>
+                            <td style="padding: 16px; font-size: 14px;">@reward.ValidUntil.ToString("dd.MM.yyyy")</td>
+                            <td style="padding: 16px;">
+                                <a href="/AdminReward/Edit/@reward.Id" class="btn btn-outline btn-sm" style="margin-right: 8px;">Düzenle</a>
+                                <form method="post" action="/AdminReward/Delete/@reward.Id" style="display: inline;" onsubmit="return confirm('Emin misiniz?');">
+                                    <button type="submit" class="btn btn-outline btn-sm" style="color: #dc2626;">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="card empty-state">
+            <p>Ödül bulunamadı</p>
+        </div>
+    }
+</div>

@@ -1,0 +1,112 @@
+@model Wallet
+@{
+    ViewData["Title"] = "Cüzdanım";
+    var filter = ViewBag.Filter as string;
+    var transactions = ViewBag.Transactions as List<WalletTransaction>;
+    var tierColors = new Dictionary<WalletTier, string>
+    {
+        { WalletTier.Bronz, "#FEF3C7" },
+        { WalletTier.Gümüş, "#F3F4F6" },
+        { WalletTier.Altın, "#FEF9C3" },
+        { WalletTier.Platin, "#F3E8FF" }
+    };
+    var tierTextColors = new Dictionary<WalletTier, string>
+    {
+        { WalletTier.Bronz, "#92400E" },
+        { WalletTier.Gümüş, "#374151" },
+        { WalletTier.Altın, "#854D0E" },
+        { WalletTier.Platin, "#6B21A8" }
+    };
+}
+
+<div class="container page-container">
+    <div class="mb-8">
+        <h1 class="page-title">Cüzdanım</h1>
+        <p class="page-description">Puan bakiyeniz ve işlem geçmişi</p>
+    </div>
+
+    <div class="content-grid" style="margin-bottom: 24px;">
+        <div class="card">
+            <div class="card-body">
+                <div class="wallet-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <h3 style="font-size: 18px; font-weight: 600;">Puan Bakiyesi</h3>
+                </div>
+                <div style="font-size: 48px; font-weight: bold; color: var(--primary); margin-bottom: 16px;">@Model.Balance.ToString("N0")</div>
+                <span class="badge" style="background-color: @tierColors[Model.Tier]; color: @tierTextColors[Model.Tier]; border: 1px solid @tierTextColors[Model.Tier];">
+                    @Model.Tier Üye
+                </span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">İstatistikler</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="wallet-stat-label" style="color: #059669; margin-bottom: 4px;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            <span>Toplam Kazanç</span>
+                        </div>
+                        <div style="font-size: 24px; font-weight: bold; color: #059669;">@Model.TotalEarned.ToString("N0")</div>
+                    </div>
+                    <div>
+                        <div class="wallet-stat-label" style="color: #DC2626; margin-bottom: 4px;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                            </svg>
+                            <span>Toplam Harcama</span>
+                        </div>
+                        <div style="font-size: 24px; font-weight: bold; color: #DC2626;">@Model.TotalSpent.ToString("N0")</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">İşlem Geçmişi</h3>
+            <div class="tabs">
+                <div class="tabs-list">
+                    <a href="/Wallet" class="tab-btn @(filter == null ? "active" : "")">Tümü</a>
+                    <a href="/Wallet?filter=earn" class="tab-btn @(filter == "earn" ? "active" : "")">Kazançlar</a>
+                    <a href="/Wallet?filter=spend" class="tab-btn @(filter == "spend" ? "active" : "")">Harcamalar</a>
+                </div>
+            </div>
+            
+            @if (transactions != null && transactions.Any())
+            {
+                <div class="space-y-2">
+                    @foreach (var tx in transactions)
+                    {
+                        <div class="wallet-transaction">
+                            <div class="wallet-transaction-info">
+                                <div class="wallet-transaction-title">@(tx.Description ?? tx.Ref)</div>
+                                <div class="wallet-transaction-date">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    @tx.CreatedAt.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            </div>
+                            <div class="wallet-transaction-amount @(tx.Amount > 0 ? "positive" : "negative")">
+                                @(tx.Amount > 0 ? "+" : "")@tx.Amount.ToString("N0")
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    İşlem bulunamadı
+                </div>
+            }
+        </div>
+    </div>
+</div>

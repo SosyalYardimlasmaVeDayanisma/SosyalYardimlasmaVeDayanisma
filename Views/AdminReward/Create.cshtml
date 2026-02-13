@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Ödül Ekle";
+}
+
+<div class="container page-container">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 class="page-title">Yeni Ödül Ekle</h1>
+
+        <form method="post" class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Ödül Adı *</label>
+                    <input type="text" name="Title" placeholder="Ödül adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mağaza Adı *</label>
+                    <input type="text" name="MerchantName" placeholder="Mağaza adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kategori *</label>
+                    <input type="text" name="Category" placeholder="Örn: Yemek & İçecek" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Şehir *</label>
+                    <input type="text" name="City" placeholder="İl adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Maliyet (Puan) *</label>
+                    <input type="number" name="CostPoints" placeholder="500" required step="50" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Stok Sayısı *</label>
+                    <input type="number" name="Stock" placeholder="50" required step="1" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Geçerlilik Tarihi *</label>
+                    <input type="date" name="ValidUntil" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Açıklama</label>
+                    <textarea name="Description" placeholder="Ödül açıklaması" rows="3" class="form-input"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top: 24px;">Ödül Ekle</button>
+            </div>
+        </form>
+    </div>
+</div>

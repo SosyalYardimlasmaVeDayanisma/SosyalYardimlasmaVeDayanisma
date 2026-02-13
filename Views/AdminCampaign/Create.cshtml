@@ -1,0 +1,52 @@
+@model Campaign
+@{
+    ViewData["Title"] = "Kampanya Ekle";
+}
+
+<div class="container page-container">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <h1 class="page-title">Yeni Kampanya Ekle</h1>
+
+        <form method="post" class="card">
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="form-label">Kampanya Adı *</label>
+                    <input type="text" name="Title" placeholder="Kampanya adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Açıklama</label>
+                    <textarea name="Description" placeholder="Kampanya açıklaması" rows="4" class="form-input"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Şehir *</label>
+                    <input type="text" name="City" placeholder="İl adını girin" required class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Afet Türü *</label>
+                    <select name="DisasterType" required class="form-select">
+                        <option value="">Seçiniz</option>
+                        <option value="0">Deprem</option>
+                        <option value="1">Sel</option>
+                        <option value="2">Yangın</option>
+                        <option value="3">Diğer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Hedef Tutar (TL) *</label>
+                    <input type="number" name="GoalAmount" placeholder="100000" required step="1000" class="form-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">NGO Adı *</label>
+                    <input type="text" name="NgoName" placeholder="Organizasyon adı" required class="form-input">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" style="margin-top: 24px;">Kampanya Ekle</button>
+            </div>
+        </form>
+    </div>
+</div>

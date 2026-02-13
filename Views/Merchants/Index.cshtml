@@ -1,0 +1,116 @@
+@model Dictionary<MerchantType, List<Merchant>>
+@{
+    ViewData["Title"] = "Destekçi İş Ortakları";
+}
+
+<div class="container page-container">
+    <!-- Manifesto Bölümü -->
+    <div class="manifesto-section">
+        <h1 class="page-title" style="text-align: center; margin-bottom: 24px;">Destekçi İş Ortakları İlkeleri</h1>
+        <div class="manifesto-content">
+            <p class="manifesto-text">
+                <strong>İyilikPuan</strong>, yardımlaşmayı ve dayanışmayı güçlendiren bir ekosistemdir. 
+                Bu ekosistemde yer alan iş ortaklarımız, sadece ticari değil, <em>etik ve insani değerler</em> 
+                üzerinden seçilir. Boykot kapsamında olan, küresel zincir niteliğindeki veya yerel ekonomiye 
+                zarar veren herhangi bir marka bu platformda yer almaz.
+            </p>
+            <p class="manifesto-text">
+                Destekçi iş ortaklarımız, yerel üreticileri güçlendirir, adil ticaret yapar, çevreye duyarlı 
+                üretim yapar, toplumsal faydaya katkıda bulunur ve şeffaflık ilkesine bağlı kalır. 
+                Her iş ortağı, İyilikPuan ekosistemine katkı sağlarken, kendi etik duruşunu korur.
+            </p>
+            <p class="manifesto-highlight">
+                Bu sayfa bir satış veya reklam alanı değildir. Burada listelenen iş ortakları, 
+                <strong>iyi niyetle ekosisteme katkı sağlayan destekçilerdir</strong>.
+            </p>
+        </div>
+    </div>
+
+    <!-- Destekçi Grupları -->
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var group in Model.OrderBy(g => g.Key))
+        {
+            <div class="merchant-group-section">
+                <div class="group-header">
+                    <div class="group-icon">
+                        @switch (group.Key)
+                        {
+                            case MerchantType.YerelFiziki:
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                                break;
+                            case MerchantType.KooperatifSosyal:
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                break;
+                            case MerchantType.YerliDijital:
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                                break;
+                        }
+                    </div>
+                    <h2 class="group-title">
+                        @switch (group.Key)
+                        {
+                            case MerchantType.YerelFiziki:
+                                <text>Yerel Fiziki İşletmeler</text>
+                                break;
+                            case MerchantType.KooperatifSosyal:
+                                <text>Kooperatif ve Sosyal Girişimler</text>
+                                break;
+                            case MerchantType.YerliDijital:
+                                <text>Yerli ve Etik Dijital Destekçiler</text>
+                                break;
+                        }
+                    </h2>
+                </div>
+
+                <div class="grid grid-3">
+                    @foreach (var merchant in group.Value)
+                    {
+                        <div class="merchant-card">
+                            <div class="merchant-card-body">
+                                <h3 class="merchant-name">@merchant.Name</h3>
+                                <div class="merchant-info">
+                                    <div class="merchant-detail">
+                                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        <span>@merchant.City</span>
+                                    </div>
+                                    <div class="merchant-detail">
+                                        <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                        </svg>
+                                        <span>@merchant.BusinessType</span>
+                                    </div>
+                                </div>
+                                <div class="contribution-badge">
+                                    <svg class="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span>İyilikPuan ekosistemine katkı sağlıyor</span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(merchant.ContributionDescription))
+                                {
+                                    <p class="contribution-description">@merchant.ContributionDescription</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="card empty-state">
+            <p>Destekçi iş ortağı bulunamadı</p>
+        </div>
+    }
+</div>

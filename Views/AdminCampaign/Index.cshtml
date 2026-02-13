@@ -1,0 +1,59 @@
+@model List<Campaign>
+@{
+    ViewData["Title"] = "Kampanya Yönetimi";
+}
+
+<div class="container page-container">
+    <div class="mb-8">
+        <h1 class="page-title">Kampanya Yönetimi</h1>
+        <p class="page-description">Yeni kampanya ekle, mevcut kampanyaları düzenle veya sil</p>
+    </div>
+
+    <div style="margin-bottom: 24px;">
+        <a href="/AdminCampaign/Create" class="btn btn-primary">+ Yeni Kampanya Ekle</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px;">
+                <thead style="background-color: #f3f4f6; border-bottom: 2px solid #e5e7eb;">
+                    <tr>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Kampanya Adı</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Şehir</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Durum</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">Hedef / Toplanan</th>
+                        <th style="padding: 16px; text-align: left; font-weight: 600;">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var campaign in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="padding: 16px; font-weight: 500;">@campaign.Title</td>
+                            <td style="padding: 16px;">@campaign.City</td>
+                            <td style="padding: 16px;">
+                                <span style="background-color: @(campaign.Status == CampaignStatus.Aktif ? "#dbeafe" : campaign.Status == CampaignStatus.Tamamlandı ? "#dcfce7" : "#fee2e2"); color: @(campaign.Status == CampaignStatus.Aktif ? "#0369a1" : campaign.Status == CampaignStatus.Tamamlandı ? "#166534" : "#991b1b"); padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 500;">
+                                    @campaign.Status
+                                </span>
+                            </td>
+                            <td style="padding: 16px;">₺@campaign.RaisedAmount.ToString("N0") / ₺@campaign.GoalAmount.ToString("N0")</td>
+                            <td style="padding: 16px;">
+                                <a href="/AdminCampaign/Edit/@campaign.Id" class="btn btn-outline btn-sm" style="margin-right: 8px;">Düzenle</a>
+                                <form method="post" action="/AdminCampaign/Delete/@campaign.Id" style="display: inline;" onsubmit="return confirm('Emin misiniz?');">
+                                    <button type="submit" class="btn btn-outline btn-sm" style="color: #dc2626;">Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="card empty-state">
+            <p>Kampanya bulunamadı</p>
+        </div>
+    }
+</div>

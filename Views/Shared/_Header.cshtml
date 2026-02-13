@@ -1,0 +1,140 @@
+@using Microsoft.AspNetCore.Identity
+@using AfetPuan.Services
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IWalletService WalletService
+@inject INotificationService NotificationService
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var isSignedIn = SignInManager.IsSignedIn(User);
+    User? currentUser = null;
+    Wallet? wallet = null;
+    bool isAdmin = false;
+    int unreadNotifications = 0;
+    
+    if (isSignedIn)
+    {
+        currentUser = await UserManager.GetUserAsync(User);
+        if (currentUser != null)
+        {
+            wallet = WalletService.GetWallet(currentUser.Id);
+            isAdmin = await UserManager.IsInRoleAsync(currentUser, "Admin");
+            unreadNotifications = await NotificationService.GetUnreadCountAsync(currentUser.Id);
+        }
+    }
+}
+
+<header>
+    <div class="container">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <span class="logo-text">Sosyal Dayanışma Ağı</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav>
+                <a href="/Campaigns" class="@(currentController == "Campaigns" ? "active" : "")">Dayanışma Alanları</a>
+                <a href="/Rewards" class="@(currentController == "Rewards" ? "active" : "")">Katkıyı Dönüştür</a>
+                <a href="/Volunteer" class="@(currentController == "Volunteer" ? "active" : "")">Gönüllü Ol</a>
+                <a href="/Merchants" class="@(currentController == "Merchants" ? "active" : "")">İşletmeler</a>
+                <a href="/Transparency" class="@(currentController == "Transparency" ? "active" : "")">Şeffaflık</a>
+                @if (isAdmin)
+                {
+                    <a href="/Admin" class="@(currentController == "Admin" || currentController == "AdminCampaign" || currentController == "AdminReward" || currentController == "AdminMerchant" ? "active" : "")" style="color: var(--primary); font-weight: 600;">Yönetim</a>
+                }
+            </nav>
+
+            <!-- Desktop Actions -->
+            <div class="header-actions">
+                @if (isSignedIn && currentUser != null && wallet != null)
+                {
+                    <a href="/Notifications" class="notification-btn" title="Bildirimler">
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        @if (unreadNotifications > 0)
+                        {
+                            <span class="notification-badge">@unreadNotifications</span>
+                        }
+                    </a>
+                    <a href="/Impact/Card" class="btn btn-outline btn-sm" title="Etki Kartım">
+                        📊 Etkim
+                    </a>
+                    <a href="/Profile" class="btn btn-primary btn-sm wallet-badge" title="Profilim ve Cüzdanım">
+                        <svg style="width: 16px; height: 16px; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        @if (isAdmin)
+                        {
+                            <text>@currentUser.FullName</text>
+                        }
+                        else
+                        {
+                            <text>@currentUser.FullName (@wallet.Balance.ToString("N0") puan)</text>
+                        }
+                    </a>
+                    <form method="post" action="/Auth/Logout" style="display: inline; margin-left: 12px;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline btn-sm">Çıkış Yap</button>
+                    </form>
+                }
+                else
+                {
+                    <a href="/Auth/Login" class="btn btn-primary btn-sm">Giriş Yap</a>
+                }
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <nav>
+                <a href="/Campaigns" class="@(currentController == "Campaigns" ? "active" : "")">Dayanışma Alanları</a>
+                <a href="/Rewards" class="@(currentController == "Rewards" ? "active" : "")">Katkıyı Dönüştür</a>
+                <a href="/Volunteer" class="@(currentController == "Volunteer" ? "active" : "")">Gönüllü Ol</a>
+                <a href="/Merchants" class="@(currentController == "Merchants" ? "active" : "")">İşletmeler</a>
+                <a href="/Transparency" class="@(currentController == "Transparency" ? "active" : "")">Şeffaflık</a>
+                @if (isAdmin)
+                {
+                    <a href="/Admin" class="@(currentController == "Admin" || currentController == "AdminCampaign" || currentController == "AdminReward" || currentController == "AdminMerchant" ? "active" : "")">Yönetim</a>
+                }
+            </nav>
+            
+            <div class="header-actions">
+                @if (isSignedIn && currentUser != null && wallet != null)
+                {
+                    <a href="/Profile" class="btn btn-primary btn-sm" style="background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%); white-space: nowrap;">@currentUser.FullName (@wallet.Balance.ToString("N0") puan)</a>
+                    <span style="text-align: center; padding: 12px; color: var(--text-primary); font-weight: 500;">@currentUser.FullName</span>
+                    <form method="post" action="/Auth/Logout">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline btn-sm">Çıkış Yap</button>
+                    </form>
+                }
+                else
+                {
+                    <a href="/Auth/Login" class="btn btn-primary btn-sm">Giriş Yap</a>
+                }
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        const btn = document.querySelector('.mobile-menu-btn');
+        menu.classList.toggle('active');
+        btn.classList.toggle('active');
+    }
+</script>

@@ -1,0 +1,202 @@
+@model List<AfetPuan.Models.Notification>
+
+@{
+    ViewData["Title"] = "Bildirimler";
+}
+
+<div class="notifications-page">
+    <div class="notifications-header">
+        <h1>Bildirimleriniz</h1>
+        @if (Model.Any(n => !n.IsRead))
+        {
+            <form asp-action="MarkAllAsRead" method="post" style="display:inline;">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn-secondary">Tümünü Okundu İşaretle</button>
+            </form>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <div class="empty-icon">🔔</div>
+            <h3>Henüz bildiriminiz yok</h3>
+            <p>Katkı yaptığınızda veya önemli gelişmeler olduğunda burada göreceksiniz.</p>
+        </div>
+    }
+    else
+    {
+        <div class="notifications-list">
+            @foreach (var notification in Model)
+            {
+                <div class="notification-card @(notification.IsRead ? "read" : "unread")">
+                    <div class="notification-icon">
+                        @switch (notification.Type)
+                        {
+                            case AfetPuan.Models.NotificationType.DonationMade:
+                                <span>💚</span>
+                                break;
+                            case AfetPuan.Models.NotificationType.PointsConverted:
+                                <span>🎁</span>
+                                break;
+                            case AfetPuan.Models.NotificationType.CampaignCompleted:
+                                <span>🎉</span>
+                                break;
+                            case AfetPuan.Models.NotificationType.ImpactRealized:
+                                <span>✨</span>
+                                break;
+                        }
+                    </div>
+                    <div class="notification-content">
+                        <h4>@notification.Title</h4>
+                        <p>@notification.Message</p>
+                        <span class="notification-time">@notification.CreatedAt.ToString("dd MMM yyyy, HH:mm")</span>
+                    </div>
+                    <div class="notification-actions">
+                        @if (!notification.IsRead)
+                        {
+                            <form asp-action="MarkAsRead" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@notification.Id" />
+                                <button type="submit" class="btn-icon" title="Okundu işaretle">✓</button>
+                            </form>
+                        }
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@notification.Id" />
+                            <button type="submit" class="btn-icon btn-danger" title="Sil">🗑️</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+.notifications-page {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.notifications-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.notifications-header h1 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.notification-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.notification-card.unread {
+    background: linear-gradient(to right, rgba(16, 185, 129, 0.05), white);
+    border-left-color: var(--primary);
+}
+
+.notification-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.notification-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-content h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.notification-content p {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.notification-time {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+}
+
+.notification-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s;
+    font-size: 1.2rem;
+}
+
+.btn-icon:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.btn-icon.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.btn-secondary {
+    padding: 0.6rem 1.2rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+</style>

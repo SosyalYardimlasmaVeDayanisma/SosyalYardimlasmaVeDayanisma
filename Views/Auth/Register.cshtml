@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container page-container" style="display: flex; align-items: center; justify-content: center; min-height: 70vh;">
+    <div style="width: 100%; max-width: 480px;">
+        <div class="card" style="box-shadow: var(--shadow-xl);">
+            <div class="card-body" style="padding: 40px;">
+                <div style="text-align: center; margin-bottom: 32px;">
+                    <div class="logo-icon" style="width: 64px; height: 64px; margin: 0 auto 16px;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 8px; color: var(--text-primary);">Hesap Oluştur</h2>
+                    <p class="text-secondary" style="font-size: 16px;">Yeni hesap oluşturun ve bağış yapmaya başlayın</p>
+                </div>
+                
+                @if (ViewBag.Error != null)
+                {
+                    <div style="margin-bottom: 24px; padding: 16px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%); border: 2px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-md); color: #991B1B; font-size: 14px; font-weight: 500;">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form method="post" action="/Auth/Register">
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label class="form-label">İsim Soyisim</label>
+                        <input type="text" name="name" value="@ViewBag.Name" placeholder="Adınız Soyadınız" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">E-posta</label>
+                        <input type="email" name="email" value="@ViewBag.Email" placeholder="ornek@email.com" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Şifre</label>
+                        <input type="password" name="password" placeholder="••••••••" required minlength="8" class="form-input">
+                        <small style="color: var(--text-secondary); font-size: 12px; margin-top: 4px; display: block;">
+                            En az 8 karakter, büyük harf, küçük harf, rakam ve özel karakter içermelidir.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Şifre Tekrar</label>
+                        <input type="password" name="confirmPassword" placeholder="••••••••" required minlength="8" class="form-input">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top: 8px;">Kayıt Ol</button>
+                    <div style="text-align: center; font-size: 15px; color: var(--text-secondary); margin-top: 24px;">
+                        Zaten hesabınız var mı? <a href="/Auth/Login" style="color: var(--primary); text-decoration: none; font-weight: 600;">Giriş yapın</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

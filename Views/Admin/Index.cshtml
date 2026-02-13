@@ -1,0 +1,103 @@
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+    var totalCampaigns = ViewBag.TotalCampaigns as int? ?? 0;
+    var activeCampaigns = ViewBag.ActiveCampaigns as int? ?? 0;
+    var totalRewards = ViewBag.TotalRewards as int? ?? 0;
+    var totalDonations = ViewBag.TotalDonations as int? ?? 0;
+}
+
+<div class="container page-container">
+    <div style="max-width: 900px; margin: 0 auto;">
+        <h1 class="page-title">Yönetim Paneli</h1>
+        <p class="page-description">İçerik yönetimi ve temel işlemler</p>
+
+        <!-- İstatistikler -->
+        <div class="stats-grid" style="margin-bottom: 40px;">
+            <div class="card stat-card">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <div class="stat-value">@activeCampaigns</div>
+                <div class="stat-label">Aktif Kampanya</div>
+            </div>
+            <div class="card stat-card">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                </svg>
+                <div class="stat-value">@totalRewards</div>
+                <div class="stat-label">Ödül Seçeneği</div>
+            </div>
+            <div class="card stat-card">
+                <svg class="stat-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                <div class="stat-value">@totalDonations</div>
+                <div class="stat-label">Toplam Katkı</div>
+            </div>
+        </div>
+
+        <!-- Yönetim Modülleri -->
+        <div class="grid grid-2" style="gap: 24px;">
+            <!-- Kampanya Yönetimi -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">
+                        Kampanyalar
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                        Kampanya ekle, düzenle veya kapat
+                    </p>
+                    <div style="display: flex; gap: 12px;">
+                        <a href="/AdminCampaign" class="btn btn-primary btn-sm" style="flex: 1;">Yönet</a>
+                        <a href="/AdminCampaign/Create" class="btn btn-outline btn-sm">Yeni Ekle</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ödül Yönetimi -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">
+                        Ödüller
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                        Ödül seçeneklerini yönet
+                    </p>
+                    <div style="display: flex; gap: 12px;">
+                        <a href="/AdminReward" class="btn btn-primary btn-sm" style="flex: 1;">Yönet</a>
+                        <a href="/AdminReward/Create" class="btn btn-outline btn-sm">Yeni Ekle</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mağaza Yönetimi -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">
+                        İşletmeler
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                        Destekçi işletmeleri yönet
+                    </p>
+                    <div style="display: flex; gap: 12px;">
+                        <a href="/AdminMerchant" class="btn btn-primary btn-sm" style="flex: 1;">Yönet</a>
+                        <a href="/AdminMerchant/Create" class="btn btn-outline btn-sm">Yeni Ekle</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gönüllü Başvuruları -->
+            <div class="card">
+                <div class="card-body">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">
+                        Gönüllüler
+                    </h3>
+                    <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                        Gönüllü başvurularını incele
+                    </p>
+                    <a href="/AdminVolunteer" class="btn btn-primary btn-sm" style="width: 100%;">Başvuruları Gör</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
