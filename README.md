@@ -1,4 +1,4 @@
-# 🤝 Sosyal Dayanışma Ağı
+# 🤝 SosyalYardımlaşmaVeDayanışma
 
 Bağış ve gönüllülük süreçlerini dijitalleştiren, şeffaf ve kullanıcı odaklı bir sosyal sorumluluk platformu.
 
@@ -15,7 +15,7 @@ Bağış ve gönüllülük süreçlerini dijitalleştiren, şeffaf ve kullanıc�
 
 ## 📖 Platform Hakkında
 
-Sosyal Dayanışma Ağı, toplumsal yardımlaşmayı dijital bir ekosistem içinde organize eden bir web platformudur. Platform üzerinde bireyler ve kurumlar, çeşitli sosyal sorumluluk projelerine maddi veya manevi katkı sağlayabilir. Sistem, her katkının karşılığında kullanıcılara puan kazandırır ve bu puanlar eğitim içeriklerinden ürün indirimlerine kadar farklı alanlarda kullanılabilir.
+SosyalYardımlaşmaVeDayanışma, toplumsal yardımlaşmayı dijital bir ekosistem içinde organize eden bir web platformudur. Platform üzerinde bireyler ve kurumlar, çeşitli sosyal sorumluluk projelerine maddi veya manevi katkı sağlayabilir. Sistem, her katkının karşılığında kullanıcılara puan kazandırır ve bu puanlar eğitim içeriklerinden ürün indirimlerine kadar farklı alanlarda kullanılabilir.
 
 Platformun temel amacı, yardımlaşma süreçlerini basitleştirmek ve her aşamayı şeffaf hale getirmektir. Kullanıcılar yaptıkları katkıların nereye gittiğini, hangi projelere destek olduğunu ve toplam etkilerini detaylı raporlarla takip edebilir.
 
