@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 public class FaqController : Controller
 {

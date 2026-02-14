@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AfetPuan.Data;
-using AfetPuan.Models;
-using AfetPuan.Services;
+using SosyalYardim.Data;
+using SosyalYardim.Models;
+using SosyalYardim.Services;
 using Microsoft.EntityFrameworkCore;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AdminVolunteerController : Controller

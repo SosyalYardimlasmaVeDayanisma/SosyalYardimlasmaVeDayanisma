@@ -1,4 +1,4 @@
-namespace AfetPuan.Models;
+namespace SosyalYardim.Models;
 
 public class ImpactVerification
 {

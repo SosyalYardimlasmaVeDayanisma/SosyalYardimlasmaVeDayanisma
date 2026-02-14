@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AfetPuan.Models;
-using AfetPuan.Services;
+using SosyalYardim.Models;
+using SosyalYardim.Services;
 
-namespace AfetPuan.Controllers
+namespace SosyalYardim.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminMerchantController : Controller

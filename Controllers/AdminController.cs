@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AfetPuan.Services;
-using AfetPuan.Data;
+using SosyalYardim.Services;
+using SosyalYardim.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller

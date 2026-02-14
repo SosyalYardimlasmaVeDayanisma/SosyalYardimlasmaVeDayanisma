@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using AfetPuan.Services;
-using AfetPuan.Models;
-using AfetPuan.Data;
+using SosyalYardim.Services;
+using SosyalYardim.Models;
+using SosyalYardim.Data;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [Authorize]
 public class ProfileController : Controller

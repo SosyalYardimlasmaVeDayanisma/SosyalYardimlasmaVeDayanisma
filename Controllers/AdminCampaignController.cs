@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AfetPuan.Services;
-using AfetPuan.Models;
-using AfetPuan.Data;
+using SosyalYardim.Services;
+using SosyalYardim.Models;
+using SosyalYardim.Data;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AdminCampaignController : Controller

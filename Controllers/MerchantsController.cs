@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using AfetPuan.Services;
-using AfetPuan.Models;
+using SosyalYardim.Services;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
 public class MerchantsController : Controller

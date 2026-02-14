@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using AfetPuan.Models;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Data;
+namespace SosyalYardim.Data;
 
 public class AppDbContext : IdentityDbContext<User>
 {

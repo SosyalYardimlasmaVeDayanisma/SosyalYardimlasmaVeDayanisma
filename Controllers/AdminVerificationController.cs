@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using AfetPuan.Services;
-using AfetPuan.Models;
+using SosyalYardim.Services;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AdminVerificationController : Controller

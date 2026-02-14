@@ -1,6 +1,6 @@
-using AfetPuan.Services;
-using AfetPuan.Data;
-using AfetPuan.Models;
+using SosyalYardim.Services;
+using SosyalYardim.Data;
+using SosyalYardim.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

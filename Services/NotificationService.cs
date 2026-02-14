@@ -1,8 +1,8 @@
-using AfetPuan.Models;
-using AfetPuan.Data;
+using SosyalYardim.Models;
+using SosyalYardim.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace AfetPuan.Services;
+namespace SosyalYardim.Services;
 
 public class NotificationService : INotificationService
 {

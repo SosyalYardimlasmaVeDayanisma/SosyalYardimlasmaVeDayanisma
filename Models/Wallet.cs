@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AfetPuan.Models;
+namespace SosyalYardim.Models;
 
 public enum TransactionType
 {

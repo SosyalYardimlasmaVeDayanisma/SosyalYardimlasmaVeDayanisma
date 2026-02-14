@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using AfetPuan.Services;
-using AfetPuan.Models;
+using SosyalYardim.Services;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 [Authorize]
 public class WalletController : Controller

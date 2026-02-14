@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 
-namespace AfetPuan.Services;
+namespace SosyalYardim.Services;
 
 public class EmailService : IEmailService
 {

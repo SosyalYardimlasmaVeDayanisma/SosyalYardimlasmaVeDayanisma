@@ -1,7 +1,7 @@
-using AfetPuan.Models;
-using AfetPuan.Data;
+using SosyalYardim.Models;
+using SosyalYardim.Data;
 
-namespace AfetPuan.Services;
+namespace SosyalYardim.Services;
 
 public class RewardService : IRewardService
 {

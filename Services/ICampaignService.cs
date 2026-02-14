@@ -1,6 +1,6 @@
-using AfetPuan.Models;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Services;
+namespace SosyalYardim.Services;
 
 public interface ICampaignService
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace AfetPuan.Models;
+namespace SosyalYardim.Models;
 
 public class User : IdentityUser
 {

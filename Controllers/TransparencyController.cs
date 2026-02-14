@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using AfetPuan.Services;
-using AfetPuan.Models;
+using SosyalYardim.Services;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 public class TransparencyController : Controller
 {

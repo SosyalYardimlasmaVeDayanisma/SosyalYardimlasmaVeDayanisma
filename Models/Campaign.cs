@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace AfetPuan.Models;
+namespace SosyalYardim.Models;
 
 public enum DisasterType
 {

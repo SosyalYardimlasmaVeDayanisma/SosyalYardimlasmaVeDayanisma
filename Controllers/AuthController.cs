@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using AfetPuan.Models;
+using SosyalYardim.Models;
 
-namespace AfetPuan.Controllers;
+namespace SosyalYardim.Controllers;
 
 public class AuthController : Controller
 {

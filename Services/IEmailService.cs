@@ -1,4 +1,4 @@
-namespace AfetPuan.Services;
+namespace SosyalYardim.Services;
 
 public interface IEmailService
 {
