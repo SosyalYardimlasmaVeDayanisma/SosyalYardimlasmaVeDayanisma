@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/AfetPuan.csproj",
+                "${workspaceFolder}/SosyalYardim.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -23,7 +23,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/AfetPuan.csproj",
+                "${workspaceFolder}/SosyalYardim.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -37,7 +37,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/AfetPuan.csproj"
+                "${workspaceFolder}/SosyalYardim.csproj"
             ],
             "problemMatcher": "$msCompile",
             "isBackground": true
